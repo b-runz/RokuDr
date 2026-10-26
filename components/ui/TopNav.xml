@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Top tab bar. tabs = [{id,label,right}]. Left/Right moves, OK selects, Down asks the screen to hand focus to its content. -->
+<component name="TopNav" extends="Group">
+    <interface>
+        <field id="tabs" type="array" onChange="rebuild" />
+        <field id="active" type="string" onChange="rebuild" />
+        <field id="selected" type="string" alwaysNotify="true" />
+        <field id="downRequested" type="boolean" alwaysNotify="true" />
+    </interface>
+    <script type="text/brightscript" uri="TopNav.brs" />
+    <children>
+        <Group id="items" />
+    </children>
+</component>

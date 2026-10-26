@@ -1,0 +1,9 @@
+{
+  "rootDir": ".",
+  "files": ["manifest", "source/**/*", "components/**/*", "images/**/*"],
+  "stagingDir": "dist/staging",
+  "retainStagingDir": false,
+  "createPackage": true,
+  "outFile": "dist/drtv-dev.zip",
+  "sourceMap": false
+}

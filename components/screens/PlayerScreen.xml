@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Full-screen player for episodes/films and live channels. Roku's own trick-play UI is used for scrubbing. -->
+<component name="PlayerScreen" extends="Group">
+    <interface>
+        <field id="action" type="assocarray" alwaysNotify="true" />
+        <field id="item" type="assocarray" />
+        <field id="parent" type="assocarray" />
+        <field id="live" type="boolean" value="false" />
+        <field id="channels" type="array" />
+        <function name="Start" />
+        <function name="StopScreen" />
+        <function name="Activate" />
+    </interface>
+    <script type="text/brightscript" uri="PlayerScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <children>
+        <Rectangle width="1920" height="1080" color="0x000000FF" />
+        <Video id="video" width="1920" height="1080" translation="[0,0]" />
+        <Group id="card" visible="false" translation="[1230,640]">
+            <Rectangle width="600" height="200" color="0x000000DD" />
+            <Rectangle width="8" height="200" color="0xFF0018FF" />
+            <Label id="cardHead" translation="[30,16]" width="540" color="0xCCCCCCFF" text="NÆSTE AFSNIT" font="font:SmallSystemFont" />
+            <Label id="cardTitle" translation="[30,52]" width="540" height="90" wrap="true" numLines="2" color="0xFFFFFFFF" font="font:MediumBoldSystemFont" />
+            <Label id="cardHint" translation="[30,150]" width="540" color="0xBBBBBBFF" font="font:SmallSystemFont" />
+        </Group>
+        <Label id="msg" translation="[360,60]" width="1200" horizAlign="center" color="0xFFFFFFFF" visible="false" font="font:MediumBoldSystemFont" />
+        <Timer id="syncTimer" duration="20" repeat="true" />
+        <Timer id="countTimer" duration="1" repeat="true" />
+        <Timer id="msgTimer" duration="2.5" repeat="false" />
+    </children>
+</component>

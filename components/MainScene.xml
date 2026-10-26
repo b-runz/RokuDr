@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+    <script type="text/brightscript" uri="MainScene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <children>
+        <Rectangle id="bg" width="1920" height="1080" color="0xFFFFFFFF" />
+        <Group id="screens" />
+        <Label id="toast" translation="[460,970]" width="1000" horizAlign="center" color="0xFFFFFFFF" visible="false" font="font:MediumBoldSystemFont" />
+        <Timer id="toastTimer" duration="2.5" repeat="false" />
+    </children>
+</component>

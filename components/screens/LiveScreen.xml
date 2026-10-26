@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Live tv: pick a channel (DR1, DR2, TVA Live, Ramasjang) with what is on now and next. -->
+<component name="LiveScreen" extends="RowScreen">
+    <interface>
+        <function name="Start" />
+    </interface>
+    <script type="text/brightscript" uri="LiveScreen.brs" />
+</component>

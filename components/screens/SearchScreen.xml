@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Search: on-screen keyboard on top, results in rows below. -->
+<component name="SearchScreen" extends="Group">
+    <interface>
+        <field id="action" type="assocarray" alwaysNotify="true" />
+        <field id="tabs" type="array" />
+        <field id="activeTab" type="string" />
+        <field id="loggedIn" type="boolean" value="false" />
+        <function name="Activate" />
+        <function name="Start" />
+    </interface>
+    <script type="text/brightscript" uri="SearchScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Rows.brs" />
+    <children>
+        <Rectangle width="1920" height="1080" color="0xFFFFFFFF" />
+        <TopNav id="nav" translation="[0,40]" />
+        <Rectangle id="kbPanel" translation="[100,140]" width="1720" height="470" color="0x202020FF" />
+        <Rectangle id="queryBg" translation="[130,160]" width="1660" height="76" color="0x3A3A3AFF" />
+        <Label id="query" translation="[150,160]" width="1620" height="76" vertAlign="center" color="0xFFFFFFFF" font="font:MediumSystemFont" />
+        <MarkupGrid id="keys" translation="[130,252]" itemComponentName="KeyItem" numColumns="11" numRows="4"
+            itemSize="[148,84]" itemSpacing="[6,6]" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" />
+        <RowList id="rows" translation="[0,650]" itemComponentName="DrItem" itemSize="[1920,420]"
+            numRows="1" drawFocusFeedback="false" rowFocusAnimationStyle="floatingFocus"
+            vertFocusAnimationStyle="floatingFocus" rowLabelColor="0x333333FF" showRowCounter="[false]"
+            focusXOffset="[120]" />
+        <Label id="msg" translation="[120,700]" width="1680" color="0x555555FF" visible="false" font="font:MediumSystemFont" />
+        <Timer id="debounce" duration="0.7" repeat="false" />
+    </children>
+</component>

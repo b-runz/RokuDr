@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Base screen: top navigation + a RowList of DrItem tiles. Screens extend this and feed it row specs. -->
+<component name="RowScreen" extends="Group">
+    <interface>
+        <!-- events for MainScene: {type:"nav"|"open"|"go", ...} -->
+        <field id="action" type="assocarray" alwaysNotify="true" />
+        <field id="tabs" type="array" />
+        <field id="activeTab" type="string" />
+        <field id="loggedIn" type="boolean" value="false" />
+        <function name="Activate" />
+    </interface>
+    <script type="text/brightscript" uri="RowScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Rows.brs" />
+    <children>
+        <Rectangle id="bg" width="1920" height="1080" color="0xFFFFFFFF" />
+        <RowList id="rows" translation="[0,170]" itemComponentName="DrItem" itemSize="[1920,420]"
+            numRows="2" drawFocusFeedback="false" rowFocusAnimationStyle="floatingFocus"
+            vertFocusAnimationStyle="floatingFocus" rowLabelColor="0x333333FF" showRowCounter="[false]"
+            focusXOffset="[120]" />
+        <Label id="msg" translation="[120,330]" width="1680" wrap="true" color="0x555555FF" visible="false" font="font:MediumSystemFont" />
+        <BusyIndicator id="busy" translation="[860,480]" visible="false" />
+        <TopNav id="nav" translation="[0,40]" />
+    </children>
+</component>

@@ -1,0 +1,12 @@
+{
+  "name": "drtv-roku",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unofficial personal DRTV client for Roku (SceneGraph / BrightScript)",
+  "scripts": {
+    "build": "bsc --project bsconfig.json"
+  },
+  "devDependencies": {
+    "brighterscript": "^0.73.8"
+  }
+}

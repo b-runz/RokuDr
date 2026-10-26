@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Device-code login: shows a 6-character code; the user enters it in DR's phone app ("Log ind på TV"). -->
+<component name="LoginScreen" extends="Group">
+    <interface>
+        <field id="action" type="assocarray" alwaysNotify="true" />
+        <function name="Start" />
+        <function name="StopScreen" />
+        <function name="Activate" />
+    </interface>
+    <script type="text/brightscript" uri="LoginScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <children>
+        <Rectangle width="1920" height="1080" color="0xFFFFFFFF" />
+        <Label translation="[0,200]" width="1920" horizAlign="center" color="0x222222FF" text="Log ind på TV" font="font:LargeBoldSystemFont" />
+        <Label translation="[360,300]" width="1200" horizAlign="center" wrap="true" numLines="3" color="0x555555FF"
+            text="Åbn DRTV-appen på din telefon, vælg &quot;Log ind på TV&quot; og indtast koden:" font="font:MediumSystemFont" />
+        <Label id="code" translation="[0,430]" width="1920" horizAlign="center" color="0xFF0018FF" text="······" font="font:LargeBoldSystemFont" />
+        <Label id="hint" translation="[0,680]" width="1920" horizAlign="center" color="0x555555FF" text="Henter kode…" font="font:MediumSystemFont" />
+        <Label translation="[0,980]" width="1920" horizAlign="center" color="0x999999FF" text="Tilbage: fortsæt uden at logge ind (du kan ikke afspille)" font="font:SmallSystemFont" />
+        <Timer id="poll" duration="3" repeat="true" />
+    </children>
+</component>

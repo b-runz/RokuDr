@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- One DR API call (or a parallel batch) on a background thread. Create, set request, set control="RUN", observe response. -->
+<component name="ApiTask" extends="Task">
+    <interface>
+        <!-- {path|url, method, params, token:"acc"|"pro"|"none", body, storeTokens}  or  {batch:[request, ...], parallel:n} -->
+        <field id="request" type="assocarray" />
+        <field id="response" type="assocarray" />
+    </interface>
+    <script type="text/brightscript" uri="ApiTask.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Api.brs" />
+</component>

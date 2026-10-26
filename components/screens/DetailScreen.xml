@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Series "channel page" (banner, FORTSÆT/NÆSTE AFSNIT, one row per season) and episode/film page. -->
+<component name="DetailScreen" extends="Group">
+    <interface>
+        <field id="action" type="assocarray" alwaysNotify="true" />
+        <field id="item" type="assocarray" />
+        <field id="loggedIn" type="boolean" value="false" />
+        <function name="Start" />
+        <function name="Activate" />
+        <function name="Refresh" />
+    </interface>
+    <script type="text/brightscript" uri="DetailScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Rows.brs" />
+    <children>
+        <Rectangle id="bg" width="1920" height="1080" color="0xFFFFFFFF" />
+        <Group id="page" translation="[0,0]">
+            <Poster id="banner" width="1920" height="640" loadDisplayMode="scaleToZoom" />
+            <Rectangle id="panel" translation="[0,300]" width="1920" height="340" color="0xFFFFFFE0" />
+            <Label id="title" translation="[120,318]" width="1680" height="56" color="0x222222FF" font="font:LargeBoldSystemFont" />
+            <ActionBar id="actions" translation="[120,386]" />
+            <Label id="subline" translation="[120,466]" width="1680" height="36" color="0xFF0018FF" font="font:MediumBoldSystemFont" />
+            <Label id="meta" translation="[120,500]" width="1680" height="34" color="0x444444FF" font="font:SmallBoldSystemFont" />
+            <Label id="desc" translation="[120,536]" width="1680" height="96" wrap="true" numLines="3" color="0x333333FF" font="font:SmallSystemFont" />
+            <RowList id="rows" translation="[0,670]" itemComponentName="DrItem" itemSize="[1920,420]"
+                numRows="1" drawFocusFeedback="false" rowFocusAnimationStyle="floatingFocus"
+                vertFocusAnimationStyle="floatingFocus" rowLabelColor="0x333333FF" showRowCounter="[false]"
+                focusXOffset="[120]" />
+        </Group>
+        <BusyIndicator id="busy" translation="[860,480]" visible="false" />
+    </children>
+</component>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- One key of the on-screen keyboard (MarkupGrid item). -->
+<component name="KeyItem" extends="Group">
+    <interface>
+        <field id="itemContent" type="node" onChange="onContent" />
+        <field id="width" type="float" onChange="layout" />
+        <field id="height" type="float" onChange="layout" />
+        <field id="itemHasFocus" type="boolean" onChange="onFocus" />
+        <field id="gridHasFocus" type="boolean" onChange="onFocus" />
+    </interface>
+    <script type="text/brightscript" uri="KeyItem.brs" />
+    <children>
+        <Rectangle id="bg" color="0x3A3A3AFF" />
+        <Label id="lbl" color="0xFFFFFFFF" horizAlign="center" vertAlign="center" font="font:MediumSystemFont" />
+    </children>
+</component>

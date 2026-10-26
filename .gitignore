@@ -1,0 +1,15 @@
+# build output and tooling
+dist/
+node_modules/
+*.zip
+
+# never commit credentials or local config
+.env
+*.token
+tokens.json
+state.json
+
+# editor / OS noise
+.DS_Store
+Thumbs.db
+*.log

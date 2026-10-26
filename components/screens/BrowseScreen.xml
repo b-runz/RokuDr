@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Forside ("home"), the SERIER menu ("series") and any DR page ("page", path set). -->
+<component name="BrowseScreen" extends="RowScreen">
+    <interface>
+        <field id="mode" type="string" value="home" />
+        <field id="path" type="string" />
+        <field id="chip" type="string" value="all" />
+        <function name="Start" />
+    </interface>
+    <script type="text/brightscript" uri="BrowseScreen.brs" />
+</component>

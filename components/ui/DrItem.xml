@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- One tile in a RowList: hero card, poster, 16:9 tile, "more" tile, square, live card. Layout depends on content.kind. -->
+<component name="DrItem" extends="Group">
+    <interface>
+        <field id="itemContent" type="node" onChange="onContent" />
+        <field id="width" type="float" onChange="onSize" />
+        <field id="height" type="float" onChange="onSize" />
+        <field id="itemHasFocus" type="boolean" onChange="onFocus" />
+        <field id="rowListHasFocus" type="boolean" onChange="onFocus" />
+    </interface>
+    <script type="text/brightscript" uri="DrItem.brs" />
+    <children>
+        <Rectangle id="artBg" color="0xE9E4E4FF" />
+        <Poster id="art" loadDisplayMode="scaleToZoom" />
+        <Rectangle id="shade" color="0xFFFFFFCC" />
+        <Rectangle id="chipBg" color="0xFF0018FF" />
+        <Label id="chip" font="font:SmallBoldSystemFont" color="0xFFFFFFFF" horizAlign="center" vertAlign="center">
+        </Label>
+        <Label id="title" font="font:MediumBoldSystemFont" color="0x222222FF" wrap="true" vertAlign="top" lineSpacing="0">
+        </Label>
+        <Label id="sub" font="font:SmallSystemFont" color="0x444444FF" vertAlign="top">
+        </Label>
+        <Label id="l2" font="font:SmallestSystemFont" color="0x666666FF" vertAlign="top">
+        </Label>
+        <Rectangle id="progBg" color="0x00000099" />
+        <Rectangle id="prog" color="0xFF0018FF" />
+        <Rectangle id="badgeBg" color="0x000000FF" />
+        <Label id="badge" font="font:SmallSystemFont" color="0xFFFFFFFF" horizAlign="center" vertAlign="center">
+        </Label>
+        <Rectangle id="mineBg" color="0x000000CC" />
+        <Label id="mine" font="font:SmallestBoldSystemFont" color="0xFFFFFFFF" horizAlign="center" vertAlign="center">
+        </Label>
+        <Group id="ring" visible="false">
+            <Rectangle id="ringT" color="0x000000FF" />
+            <Rectangle id="ringB" color="0x000000FF" />
+            <Rectangle id="ringL" color="0x000000FF" />
+            <Rectangle id="ringR" color="0x000000FF" />
+        </Group>
+    </children>
+</component>

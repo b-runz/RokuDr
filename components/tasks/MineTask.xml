@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Builds "Mine serier": continue watching, new episodes, up-next, my series, bookmarks and the Udforsk suggestions. -->
+<component name="MineTask" extends="Task">
+    <interface>
+        <field id="request" type="assocarray" />
+        <field id="response" type="assocarray" />
+    </interface>
+    <script type="text/brightscript" uri="MineTask.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Util.brs" />
+    <script type="text/brightscript" uri="pkg:/components/lib/Api.brs" />
+</component>

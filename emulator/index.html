@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DRTV Roku emulator</title>
+<style>
+html,body{margin:0;background:#111;color:#ddd;font:14px/1.45 "Segoe UI",Roboto,Arial,sans-serif}
+.wrap{display:flex;gap:18px;padding:14px;align-items:flex-start}
+#display{width:1280px;height:720px;background:#000;display:block;border-radius:6px;box-shadow:0 4px 24px #000a;outline:none}
+#player{display:none}
+.side{width:360px;flex:0 0 360px}
+h1{font-size:18px;margin:0 0 6px;color:#fff}
+.k{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:8px 0 12px}.k b{color:#fff;font-weight:600}
+button{font:inherit;background:#2a2a2a;color:#eee;border:1px solid #555;border-radius:5px;padding:5px 10px;cursor:pointer}button:hover{background:#3a3a3a}
+#log{background:#000;border:1px solid #333;border-radius:5px;height:380px;overflow:auto;padding:8px;font:12px/1.4 Consolas,monospace;white-space:pre-wrap;color:#9f9}
+#log .e{color:#f88}#log .w{color:#fd8}
+.note{color:#999;font-size:13px}
+</style></head><body>
+<div class="wrap">
+  <div>
+    <canvas id="display" width="1920" height="1080" tabindex="0"></canvas>
+    <video id="player" crossorigin="anonymous"></video>
+    <div class="note" style="margin-top:8px">Klik på skærmen for at give den tastaturfokus. Simulatoren er kun en tilnærmelse af en rigtig Roku (skrifttyper, billedindlæsning og video kan afvige).</div>
+  </div>
+  <div class="side">
+    <h1>DRTV · Roku-simulator</h1>
+    <div class="k">
+      <b>Piletaster</b><span>flyt</span>
+      <b>Enter</b><span>OK</span>
+      <b>Esc / Backspace</b><span>Tilbage</span>
+      <b>Home</b><span>Roku Home</span>
+      <b>Numpad *</b><span>Options (*)</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <button id="restart">Genstart app</button>
+      <button id="reset">Nulstil login/registry</button>
+    </div>
+    <label class="note"><input type="checkbox" id="seed" checked> Brug login fra den lokale server (spring kode-login over)</label>
+    <div id="status" class="note" style="margin:8px 0"></div>
+    <div id="log"></div>
+  </div>
+</div>
+<script src="lib/brs.api.js"></script>
+<script>
+const $ = (id) => document.getElementById(id);
+const log = (t, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.textContent = t; const L = $('log'); L.append(d); L.scrollTop = L.scrollHeight; while (L.childNodes.length > 600) L.removeChild(L.firstChild); };
+async function start() {
+  $('status').textContent = 'Starter…';
+  const zip = await (await fetch('drtv-dev.zip?' + Date.now())).arrayBuffer();
+  const deep = new Map();
+  if ($('seed').checked) {
+    try { const s = await (await fetch('seed.json')).json(); for (const [k, v] of Object.entries(s)) if (v) deep.set(k, String(v)); } catch { /* no local login */ }
+  }
+  brs.execute('drtv-dev.zip', zip, { clearDisplayOnExit: false, muteSound: true }, deep);
+  $('display').focus();
+}
+async function main() {
+  brs.subscribe('emu', (event, data) => {
+    if (event === 'started') $('status').textContent = 'Kører';
+    else if (event === 'closed' || event === 'error') $('status').textContent = 'Stoppet: ' + event;
+    else if (event === 'debug' && data && data.content) log(String(data.content), data.level === 'error' ? 'e' : data.level === 'warn' ? 'w' : '');
+  });
+  await brs.initialize({ corsProxy: location.origin + '/cors/', extensions: new Map([[brs.SupportedExtension.SceneGraph, './brs-sg.js']]) }, { debugToConsole: true, disableKeys: false });
+  await start();
+}
+$('restart').onclick = async () => { try { brs.terminate?.('EXIT_USER_NAV'); } catch {} setTimeout(start, 500); };
+$('reset').onclick = () => { localStorage.clear(); $('seed').checked = false; log('Registry nulstillet – genstart appen.', 'w'); };
+if (location.search.includes('noseed')) $('seed').checked = false;
+globalThis.addEventListener('load', main, false);
+</script></body></html>

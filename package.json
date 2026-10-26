@@ -3,10 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "description": "Unofficial personal DRTV client for Roku (SceneGraph / BrightScript)",
+  "engines": { "node": ">=18" },
   "scripts": {
-    "build": "bsc --project bsconfig.json"
+    "build": "node scripts/build.mjs",
+    "release": "node scripts/build.mjs --release",
+    "deploy": "node scripts/deploy.mjs",
+    "emulator": "node scripts/emulator-server.mjs",
+    "shot": "node scripts/emu-shot.mjs",
+    "art": "node scripts/make-art.mjs"
   },
   "devDependencies": {
-    "brighterscript": "^0.73.8"
+    "brighterscript": "^0.73.8",
+    "brs-engine": "^2.6.2",
+    "brs-scenegraph": "^0.6.2",
+    "playwright": "^1.50.0"
   }
 }

@@ -5,9 +5,13 @@ node_modules/
 
 # never commit credentials or local config
 .env
+.session.json
 *.token
 tokens.json
 state.json
+
+# generated screenshots
+shots/
 
 # editor / OS noise
 .DS_Store

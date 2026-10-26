@@ -6,6 +6,7 @@ node_modules/
 # never commit credentials or local config
 .env
 .session.json
+config/
 *.token
 tokens.json
 state.json

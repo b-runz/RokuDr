@@ -1,6 +1,6 @@
 {
   "rootDir": ".",
-  "files": ["manifest", "source/**/*", "components/**/*", "images/**/*"],
+  "files": ["manifest", "source/**/*", "components/**/*", "images/**/*", "config/**/*"],
   "stagingDir": "dist/staging",
   "retainStagingDir": false,
   "createPackage": true,

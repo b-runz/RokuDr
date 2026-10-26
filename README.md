@@ -17,8 +17,8 @@ cp .env.example .env                # then fill in ROKU_IP and ROKU_PASSWORD (on
 |---|---|
 | `npm run build` | Compile + validate -> `dist/drtv-dev.zip` (the sideload package) |
 | `npm run release` | Bump `build_version`, build, and also write `dist/release/drtv-dev-<major.minor.build>.zip` |
-| `npm run deploy` | Build and install on your Roku over the network (`.env`: `ROKU_IP`, `ROKU_PASSWORD`) |
-| `npm run deploy -- --seed` | Same, then start the app already logged in using `.session.json` |
+| `npm run personal` | Like `build`, but **bakes your DR session** (`.session.json`) into the package, so the app starts logged in |
+| `npm run deploy` | Build and install on your Roku over the network (`.env`: `ROKU_IP`, `ROKU_PASSWORD`). Bakes your session automatically when `.session.json` exists (refreshing it first from the local dev server if that is running); `-- --no-bake` installs a clean package |
 | `npm run emulator` | Browser emulator at http://localhost:8790/ (arrows, Enter = OK, Esc/Backspace = back) |
 | `npm run shot -- ArrowDown Enter` | Headless emulator run that presses keys and saves screenshots to `shots/` |
 | `npm run art` | Regenerate the placeholder icon/splash PNGs in `images/` |
@@ -29,9 +29,11 @@ Manual install without scripts: enable Developer Mode on the Roku, open `http://
 On the remote press Home x3, Up x2, then Right, Left, Right, Left, Right. Accept the terms, set a **webserver password**, reboot. The IP is under Settings > Network.
 
 ### Logging in
-First start shows a 6-character code: in DR's phone app choose "Log ind på TV" and enter it. The emulator keeps its login in the browser.
-To skip that (emulator and `deploy --seed`), put a DR session in `.session.json` (git-ignored): `{"accT":"…","accE":"…","proT":"…","proE":"…","deviceId":"…"}`.
-With the author's local dev server running: `curl http://localhost:8787/session.json -o .session.json`.
+Two ways:
+- **Personal build (recommended for your own Roku):** put your DR session in `.session.json` (git-ignored) and run `npm run deploy` (or `npm run personal` + manual upload). The package then carries the session in `config/session.json` and the app starts logged in. It is applied only when newer than the one already on the device, so **Log ud** really logs out and a newer deploy brings a fresher session. The app renews the session by itself.
+  `.session.json` format: `{"accT":"…","accE":"…","proT":"…","proE":"…","deviceId":"…"}`; with the author's local dev server running: `curl http://localhost:8787/session.json -o .session.json`.
+  **A baked package contains your DR login tokens - install it only on your own devices and never share or commit it** (`dist/`, `config/`, `.session.json` are git-ignored). Deploy soon after refreshing the session (tokens last about 11 hours before the app renews them).
+- **Clean build:** first start shows a 6-character code; enter it on the DR side (device-code login). The emulator keeps its login in the browser.
 
 ## Layout
 - `manifest`, `source/main.brs` — entry point

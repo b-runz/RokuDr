@@ -1,6 +1,6 @@
 // Builds the sideload package: dist/drtv-dev.zip (compiles + validates with brighterscript).
 //   npm run build                build (clean package)
-//   npm run build -- --bake      personal build: also embeds your DR session from .session.json, so the app starts logged in
+//   npm run personal             personal build (= build --bake): also embeds your DR session so the app starts logged in (logs in with .env when the session is missing/expiring; add --fresh to force)
 //   npm run release              bump build_version first, then also write dist/release/drtv-dev-<major.minor.build>.zip
 // A baked package contains your DR login tokens - it is for installing on your own Roku only (dist/ is git-ignored).
 import { execFileSync } from 'node:child_process';
@@ -25,15 +25,25 @@ if (release) { // bump build_version (00001 -> 00002 ...) so the Roku treats it 
 const bakedFile = path.join(root, 'config', 'session.json');
 let baked = false;
 if (bake) {
-  let s;
-  try { s = JSON.parse(fs.readFileSync(path.join(root, '.session.json'), 'utf8')); } catch { /* handled below */ }
-  if (!s?.accT || !s?.proT) {
-    console.error('--bake needs a DR session in .session.json (see README: "Logging in"). Building without it is `npm run build`.');
-    process.exit(1);
+  // The session comes from .session.json. If it is missing or has < 2 h left, log in to DR with the credentials in .env first.
+  const { drLogin, readSession, sessionLeft, sessionFile } = await import('./login.mjs');
+  const { drCredentials } = await import('./env.mjs');
+  const MIN_LEFT = 2 * 3600;
+  let s = readSession();
+  if (process.argv.includes('--fresh') || sessionLeft(s) < MIN_LEFT) {
+    const creds = drCredentials();
+    if (creds.user && creds.pass) {
+      console.log('Logging in to DR for a fresh session...');
+      s = await drLogin(creds);
+      fs.writeFileSync(sessionFile, JSON.stringify(s));
+    } else if (sessionLeft(s) > 0) {
+      console.warn(`Warning: the saved session has only ${Math.round(sessionLeft(s) / 60)} min left and .env has no DR login to refresh it.`);
+    } else {
+      console.error('--bake needs a DR login: add DR_USER and DR_PASS to .env (see .env.example), or provide a valid .session.json.');
+      process.exit(1);
+    }
   }
   fs.mkdirSync(path.dirname(bakedFile), { recursive: true });
-  const exp = Number(s.proE) || 0;
-  if (exp && exp < Date.now() / 1000) console.warn(`Warning: the saved session expired ${new Date(exp * 1000).toLocaleString()}; refresh .session.json first.`);
   fs.writeFileSync(bakedFile, JSON.stringify({ accT: s.accT, accE: s.accE, proT: s.proT, proE: s.proE, deviceId: s.deviceId, bakedAt: Math.floor(Date.now() / 1000) }));
   baked = true;
 }

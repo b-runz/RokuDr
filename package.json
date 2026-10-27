@@ -6,6 +6,7 @@
   "engines": { "node": ">=18" },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "login": "node scripts/login.mjs",
     "personal": "node scripts/build.mjs --bake",
     "release": "node scripts/build.mjs --release",
     "deploy": "node scripts/deploy.mjs",

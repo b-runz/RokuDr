@@ -1,37 +1,24 @@
 // Builds and sideloads dist/drtv-dev.zip onto a Roku that is in developer mode.
-//   npm run deploy                 build + install. If .session.json exists the build is BAKED with your DR session (starts logged in);
-//                                  if the local dev server is running, the session is refreshed from it first.
+//   npm run deploy                 personal build (your DR session baked in, from .env) + install
 //   npm run deploy -- --no-bake    install a clean package (log in with the TV code)
-//   npm run deploy -- --seed       additionally launch via ECP with the session (only needed for a clean package)
+//   npm run deploy -- --seed       additionally launch via ECP with .session.json (only useful with --no-bake)
 // Reads ROKU_IP and ROKU_PASSWORD from the environment or from .env in this folder. The password is never printed.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadEnv } from './env.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const env = { ...process.env };
-try {
-  for (const line of fs.readFileSync(path.join(root, '.env'), 'utf8').split(/\r?\n/)) {
-    const i = line.indexOf('=');
-    if (i > 0 && !line.trim().startsWith('#')) env[line.slice(0, i).trim()] ??= line.slice(i + 1).trim().replace(/^["']|["']$/g, '');
-  }
-} catch { /* no .env */ }
+const env = loadEnv();
 const ip = env.ROKU_IP, pass = env.ROKU_PASSWORD;
 if (!ip || !pass) {
   console.error('Copy .env.example to .env and fill in ROKU_IP and ROKU_PASSWORD (the developer-mode webserver password), then run again.');
   process.exit(1);
 }
 
-const sessionFile = path.join(root, '.session.json');
-const wantBake = !process.argv.includes('--no-bake') && fs.existsSync(sessionFile);
-if (wantBake) { // freshest session if the author's dev server is up; otherwise keep the saved one
-  try {
-    const r = await fetch(env.SESSION_URL || 'http://localhost:8787/session.json', { signal: AbortSignal.timeout(2500) });
-    const j = r.ok ? await r.json() : null;
-    if (j?.accT && j?.proT) { fs.writeFileSync(sessionFile, JSON.stringify(j)); console.log('Refreshed .session.json from the dev server.'); }
-  } catch { /* dev server not running: use the saved session */ }
-}
+// Personal build by default: the package carries your DR session (see build.mjs). `--no-bake` installs a clean package instead.
+const wantBake = !process.argv.includes('--no-bake');
 execFileSync(process.execPath, [path.join(root, 'scripts', 'build.mjs'), ...(wantBake ? ['--bake'] : [])], { stdio: 'inherit' });
 
 // Roku's installer uses HTTP digest auth, user "rokudev". Credentials go to curl on stdin, not on the command line.
